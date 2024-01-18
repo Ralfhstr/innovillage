@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "765446984918",
+    "project_id": "trial-a9796",
+    "storage_bucket": "trial-a9796.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:765446984918:android:b3c72ffcc69ef0bc6b2577",
+        "android_client_info": {
+          "package_name": "com.example.innovillage"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDl2zm8RDUInG3qKWuebC-Xu-Szz2m5NZw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
