@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'package:innovillage/pages/login_page.dart';
-import 'package:innovillage/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:innovillage/pages/login%20pages/login_page.dart';
+import 'package:innovillage/theme.dart';
 
 class RegisterPages extends StatefulWidget {
   const RegisterPages({super.key});
@@ -22,54 +21,68 @@ class _RegisterPagesState extends State<RegisterPages> {
   FirebaseAuth auth = FirebaseAuth.instance;
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-  Future<void> user() async {
-    if (nama.text.isNotEmpty &&
-        email.text.isNotEmpty &&
-        phone.text.isNotEmpty &&
-        homeadd.text.isNotEmpty &&
-        password.text.isNotEmpty) {
-      try {
+  Future<void> register_page() async {
+    try {
+      if (nama.text.isNotEmpty &&
+          email.text.isNotEmpty &&
+          phone.text.isNotEmpty &&
+          homeadd.text.isNotEmpty &&
+          password.text.isNotEmpty) {
         UserCredential userCredential =
             await auth.createUserWithEmailAndPassword(
-                email: email.text, password: password.text);
+          email: email.text,
+          password: password.text,
+        );
+
         if (userCredential.user != null) {
           String? uid = userCredential.user?.uid;
-          firestore.collection("user").doc(uid).set({
+
+          await firestore.collection("user").doc(uid).set({
             "nama": nama.text,
             "email": email.text,
             "password": password.text,
             "phone": phone.text,
             "homeadd": homeadd.text,
             "uid": uid,
-            "role": "admin",
-            "createdAt": DateTime.now().toIso8601String()
+            "createdAt": FieldValue.serverTimestamp(),
           });
+
+          // Navigate to the HomePages after successful registration
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => const LoginPages(),
+          ));
         }
-      } on FirebaseAuthException catch (e) {
-        if (e.code == 'weak-password') {
-          print("Terjadi Kesalahan");
-        } else if (e.code == 'email-already-in-use') {
-          print("Terjadi Kesalahan");
-        }
-      } catch (e) {
-        print("cok");
+      } else {
+        print("Error: All fields must be filled");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('All fields must be filled.'),
+          ),
+        );
       }
-    } else {
-      print("cok");
+    } catch (e) {
+      print("Error during registration: $e");
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content:
+              Text('An error occurred during registration. Please try again.'),
+        ),
+      );
     }
   }
+
   //
 
   bool _secureText = true;
 
-  void RegisterButtonPressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-          builder: (context) =>
-              LoginPages()), // Ganti NextPage() dengan halaman selanjutnya yang diinginkan
-    );
-  }
+  // void RegisterButtonPressed() {
+  //   Navigator.pushReplacement(
+  //     context,
+  //     MaterialPageRoute(
+  //         builder: (context) =>
+  //             LoginPages()), // Ganti NextPage() dengan halaman selanjutnya yang diinginkan
+  //   );
+  // }
 
   showHide() {
     setState(() {
@@ -106,7 +119,7 @@ class _RegisterPagesState extends State<RegisterPages> {
                 Text(
                   'Register New Your Account',
                   style: regulerTextStyle.copyWith(
-                      fontSize: 15, color: Colors.white),
+                      fontSize: 15, color: Colors.blue),
                 ),
                 SizedBox(
                   height: 24,
@@ -257,27 +270,27 @@ class _RegisterPagesState extends State<RegisterPages> {
                   ),
                 ),
                 SizedBox(
-                  height: 70,
+                  height: 25,
                 ),
                 Center(
                   child: Align(
                     alignment: Alignment.center,
                     child: ElevatedButton(
                       onPressed: () async {
-                        await user();
-
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => const LoginPages(),
-                        ));
+                        await register_page();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginPages()));
                       },
-                      // style: ElevatedButton.styleFrom(
-                      //   primary: Colors.blue,
-                      //   padding:
-                      //       EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                      //   shape: RoundedRectangleBorder(
-                      //     borderRadius: BorderRadius.circular(20),
-                      //   ),
-                      // ),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 100, vertical: 15),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
                       child: Text(
                         'Daftar',
                         style: regulerTextStyle.copyWith(

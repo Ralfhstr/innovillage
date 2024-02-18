@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:innovillage/pages/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:innovillage/pages/splash%20screen/splash_screen.dart';
 
 import 'firebase_options.dart';
 import 'theme.dart';

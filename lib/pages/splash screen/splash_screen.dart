@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:innovillage/pages/login_page.dart';
+import 'package:innovillage/pages/role/admindanibuhami.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginPages()),
+        MaterialPageRoute(builder: (context) => Role()),
       );
     });
   }
