@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:innovillage/pages/login%20pages/ibuhamil.dart';
-import 'package:innovillage/pages/login%20pages/login_page.dart';
 import 'package:innovillage/pages/register/register_mama.dart';
+import 'package:innovillage/pages/register/register_bidan.dart';
 
 class Role extends StatefulWidget {
   const Role({Key? key}) : super(key: key);
@@ -160,7 +159,7 @@ class _RoleState extends State<Role> {
                                   Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => LoginPages()),
+                                        builder: (context) => RegisterBidan()),
                                   );
                                 } else if (_selectedRole == 'Ibu Hamil') {
                                   Navigator.push(
