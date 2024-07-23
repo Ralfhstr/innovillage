@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:flutter/material.dart';
-import 'package:innovillage/pages/home%20pages/home_pages.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:innovillage/pages/video/video_list_screen.dart';
 

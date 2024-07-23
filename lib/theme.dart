@@ -7,6 +7,7 @@ Color birudua = Color(0xFF427D9D);
 Color birutiga = Color(0xff9BBEC8);
 Color abuabu = Color(0xff8E8181);
 Color white = Color(0xFFFFFF);
+Color pink = Color(0XFFFF899E);
 
 //text sytle
 TextStyle regulerTextStyle =

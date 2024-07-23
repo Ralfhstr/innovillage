@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:innovillage/pages/home pages/home_pages.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
 
 class IbuHamil extends StatefulWidget {
   const IbuHamil({Key? key});

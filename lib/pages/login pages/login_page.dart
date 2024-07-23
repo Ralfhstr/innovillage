@@ -1,9 +1,9 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:innovillage/pages/admin/admin_page.dart';
-
-import 'package:innovillage/pages/daftar%20pages/register_page.dart';
+import 'package:innovillage/pages/register/register_bidan.dart';
 import 'package:innovillage/theme.dart';
 
 class LoginPages extends StatefulWidget {
@@ -22,16 +22,6 @@ class _LoginPagesState extends State<LoginPages> {
     });
   }
 
-  void onLoginButtonPressed() {
-    // Implement your login logic here
-    // Navigator.pushReplacement(
-    //   context,
-    //   MaterialPageRoute(
-    //       builder: (context) =>
-    //           HomePages()), // Replace with the desired next page
-    // );
-  }
-
   final emailC = TextEditingController();
   final passC = TextEditingController();
 
@@ -43,8 +33,6 @@ class _LoginPagesState extends State<LoginPages> {
                 email: emailC.text, password: passC.text);
 
         if (userCredential.user != null) {
-          // Tidak ada pengecekan peran admin lagi di sini
-          // Hanya navigasi ke halaman default setelah login berhasil
           Navigator.of(context).pushReplacement(MaterialPageRoute(
             builder: (context) =>
                 const AdminHomePages(), // Adjust with your default home page
@@ -68,14 +56,12 @@ class _LoginPagesState extends State<LoginPages> {
     }
   }
 
-  // Function to show centered Flushbar
   void showCenteredFlushbar(String message, BuildContext context,
       {bool isError = false}) {
     Flushbar(
       message: message,
       backgroundColor: isError ? Colors.red : Colors.green,
       margin: EdgeInsets.all(8),
-      // borderRadius:
       duration: Duration(seconds: 3),
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
@@ -95,190 +81,182 @@ class _LoginPagesState extends State<LoginPages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: Center(
-        child: ListView(
-          shrinkWrap: true,
-          children: [
-            Container(
-              margin: EdgeInsets.only(top: 0),
-              padding: EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Image.asset(
-                      "assets/logo.png", // Replace with the path to your logo image
-                      height: 80, // Adjust the height as needed
-                      width: 80, // Adjust the width as needed
+      body: SafeArea(
+        child: Center(
+          child: ListView(
+            padding: EdgeInsets.all(24),
+            children: [
+              SizedBox(height: 80),
+              Center(
+                child: Image.asset(
+                  "assets/images/logo.png", // Replace with the path to your logo image
+                  height: 100,
+                  width: 100,
+                ),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: Text(
+                  "HALO MAMA",
+                  style: regulerTextStyle.copyWith(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                    fontSize: 35,
+                  ),
+                ),
+              ),
+              Center(
+                child: Text(
+                  'Masuk ke Akun Anda',
+                  style: regulerTextStyle.copyWith(
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w500,
+                    fontSize: 20,
+                    color: Colors.black,
+                  ),
+                ),
+              ),
+              // Text(
+              //   'Masuk ke Akun Anda',
+              //   style: regulerTextStyle.copyWith(
+              //       fontFamily: 'Poppins', fontSize: 15, color: Colors.black),
+              // ),
+              SizedBox(height: 20),
+              _buildTextField(
+                controller: emailC,
+                hintText: 'Email',
+                svgIcon: 'assets/icons/mail.svg',
+              ),
+              SizedBox(height: 16),
+              _buildTextField(
+                controller: passC,
+                hintText: 'Password',
+                svgIcon: 'assets/icons/key.svg',
+                obscureText: _secureText,
+                // suffixIcon: IconButton(
+                //   onPressed: showHide,
+                //   icon: _secureText
+                //       ? Icon(Icons.visibility_off, size: 20, color: Colors.grey)
+                //       : Icon(Icons.visibility, size: 20, color: Colors.grey),
+                // ),
+              ),
+              SizedBox(height: 30),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () async {
+                    await login();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0XFFFF899E),
+                    padding: EdgeInsets.symmetric(vertical: 15),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
                     ),
+                    minimumSize: Size(MediaQuery.of(context).size.width, 50),
                   ),
-                  SizedBox(
-                    height: 25,
-                  ),
-                  Center(
-                    child: Text(
-                      "HALO MAMA",
-                      style: regulerTextStyle.copyWith(
-                        fontSize: 35,
-                        color: Colors.blue,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 40,
-                  ),
-                  Text(
-                    'LOGIN',
+                  child: Text(
+                    'Login',
                     style: regulerTextStyle.copyWith(
-                      fontSize: 25,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  Text(
-                    'Login Into Your Account',
-                    style: regulerTextStyle.copyWith(
-                        fontSize: 15, color: Colors.blue),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 16),
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0, 1),
-                          blurRadius: 4,
-                          spreadRadius: 0,
-                        ),
-                      ],
+                      fontSize: 18,
                       color: Colors.white,
                     ),
-                    child: TextField(
-                      controller: emailC,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'Email Address',
-                        hintStyle: regulerTextStyle.copyWith(
-                          fontSize: 15,
-                          color: Colors.grey,
-                        ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Belum punya akun?",
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontWeight: FontWeight.w400,
+                        color: Colors.black,
+                        fontSize: 16,
                       ),
                     ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Container(
-                    padding: EdgeInsets.only(left: 16),
-                    height: 50,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey,
-                          offset: Offset(0, 1),
-                          blurRadius: 4,
-                          spreadRadius: 0,
-                        ),
-                      ],
-                      color: Colors.white,
-                    ),
-                    child: TextField(
-                      obscureText: _secureText,
-                      controller: passC,
-                      decoration: InputDecoration(
-                        suffixIcon: IconButton(
-                          onPressed: showHide,
-                          icon: _secureText
-                              ? Icon(
-                                  Icons.visibility_off,
-                                  size: 20,
-                                  color: Colors.grey,
-                                )
-                              : Icon(
-                                  Icons.visibility,
-                                  size: 20,
-                                  color: Colors.grey,
-                                ),
-                        ),
-                        border: InputBorder.none,
-                        hintText: 'Password',
-                        hintStyle: regulerTextStyle.copyWith(
-                          fontSize: 15,
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 30,
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        await login();
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.blue,
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 100, vertical: 15),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                      ),
-                      child: Text(
-                        'Login',
-                        style: regulerTextStyle.copyWith(
-                          fontSize: 18,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account?",
-                        style: TextStyle(
-                          color: Colors.grey,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 15,
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPages(),
-                            ),
-                            (route) => false,
-                          );
-                        },
-                        child: Text(
-                          ' Create Account',
-                          style: TextStyle(
-                            color: Colors.blue,
-                            fontWeight: FontWeight.bold,
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => RegisterBidan(),
                           ),
+                          (route) => false,
+                        );
+                      },
+                      child: Text(
+                        ' Dafar Disini',
+                        style: TextStyle(
+                          fontFamily: 'Poppins',
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0XFFFF899E),
+                          fontSize: 16,
                         ),
                       ),
-                    ],
-                  ),
-                ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required String svgIcon,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: 8),
+      height: 50,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(64, 172, 170, 164),
+            offset: Offset(0, 1),
+            blurRadius: 4,
+            spreadRadius: 0,
+          ),
+        ],
+        color: Colors.white,
+      ),
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: TextField(
+          controller: controller,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            prefixIcon: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 9),
+              child: SvgPicture.asset(
+                svgIcon,
+                width: 24,
+                height: 24,
               ),
             ),
-          ],
+            prefixIconConstraints: BoxConstraints(
+              minWidth: 40,
+              minHeight: 40,
+            ),
+            suffixIcon: suffixIcon,
+            border: InputBorder.none,
+            hintText: hintText,
+            hintStyle: regulerTextStyle.copyWith(
+              fontSize: 16,
+              color: Colors.grey,
+              fontFamily: 'Poppins',
+            ),
+          ),
         ),
       ),
     );

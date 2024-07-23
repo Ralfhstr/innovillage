@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:innovillage/pages/home%20pages/home_pages.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
 import 'package:innovillage/pages/rekam%20medis%20ibu%20hamil/status_kehamilan.dart';
 
 class MenuKehamilan extends StatefulWidget {

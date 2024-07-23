@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:innovillage/pages/catatan/catatandokter.dart';
-import 'package:innovillage/pages/home%20pages/home_pages.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
 import 'package:innovillage/theme.dart';
 
 class PelayananDokter extends StatefulWidget {

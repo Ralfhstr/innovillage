@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'package:innovillage/pages/home%20pages/home_pages.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
 import 'package:innovillage/pages/register%20ibu%20hamil/lihat_data_ibu_hamil.dart';
 
 class ProfilIbuHamil extends StatefulWidget {

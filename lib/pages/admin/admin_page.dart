@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:innovillage/pages/admin/ibu_hamil.dart';
 import 'package:innovillage/pages/admin/profil_ibu_hamil.dart';
-import 'package:innovillage/pages/role/admindanibuhami.dart';
+import 'package:innovillage/pages/role.dart';
 import 'package:innovillage/pages/video/lainnya.dart';
 import 'package:innovillage/pages/rekam%20medis%20ibu%20hamil/menu_kehamilan.dart';
 import 'package:innovillage/pages/admin/pelayanan_dokter.dart';
