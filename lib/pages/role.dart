@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:innovillage/pages/register/register_mama.dart';
-import 'package:innovillage/pages/register/register_bidan.dart';
+import 'package:innovillage/pages/login/login_bidan.dart';
+import 'package:innovillage/pages/login/login_mama.dart';
 
 class Role extends StatefulWidget {
   const Role({Key? key}) : super(key: key);
@@ -10,7 +10,7 @@ class Role extends StatefulWidget {
 }
 
 class _RoleState extends State<Role> {
-  String? _selectedRole;
+  String? _selectedRole = 'Ibu Hamil';
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,6 @@ class _RoleState extends State<Role> {
     var screenWidth = screenSize.width;
     var screenHeight = screenSize.height;
 
-    // Function to calculate font size based on screen width
     double fontSize(double percentage) {
       return screenWidth * percentage;
     }
@@ -35,12 +34,28 @@ class _RoleState extends State<Role> {
           child: Column(
             children: [
               SizedBox(height: screenHeight * 0.02),
-              _buildObjectsSection(context),
+              Container(
+                width: screenSize.width,
+                margin: EdgeInsets.symmetric(
+                  vertical: screenSize.height * 0.01,
+                ),
+                child: Column(
+                  children: [
+                    SizedBox(height: screenSize.height * 0.05),
+                    Image.asset(
+                      "assets/cover.png",
+                      width: screenSize.width * 0.5,
+                      height: screenSize.height * 0.2,
+                      fit: BoxFit.contain,
+                    ),
+                  ],
+                ),
+              ),
               SizedBox(height: screenHeight * 0.01),
               Container(
-                width: screenWidth * 0.9, // Adjusted width for responsiveness
+                width: screenWidth * 0.9,
                 padding: EdgeInsets.symmetric(
-                  horizontal: screenWidth * 0.05, // Reduced horizontal padding
+                  horizontal: screenWidth * 0.05,
                   vertical: screenHeight * 0.02,
                 ),
                 decoration: BoxDecoration(
@@ -66,8 +81,7 @@ class _RoleState extends State<Role> {
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
-                              fontSize: fontSize(
-                                  0.07), // Font size based on screen width
+                              fontSize: fontSize(0.07),
                               color: Colors.black,
                             ),
                           ),
@@ -76,8 +90,7 @@ class _RoleState extends State<Role> {
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
-                              fontSize: fontSize(
-                                  0.07), // Font size based on screen width
+                              fontSize: fontSize(0.07),
                               color: const Color(0XFFFF899E),
                             ),
                           ),
@@ -86,8 +99,7 @@ class _RoleState extends State<Role> {
                             style: TextStyle(
                               fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
-                              fontSize: fontSize(
-                                  0.07), // Font size based on screen width
+                              fontSize: fontSize(0.07),
                               color: Colors.black,
                             ),
                           ),
@@ -104,8 +116,7 @@ class _RoleState extends State<Role> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
-                        fontSize:
-                            fontSize(0.04), // Font size based on screen width
+                        fontSize: fontSize(0.04),
                         color: Colors.black,
                         height: 1.25,
                       ),
@@ -120,18 +131,15 @@ class _RoleState extends State<Role> {
                         border: Border.all(color: Colors.grey.shade400),
                       ),
                       child: DropdownButton<String>(
-                        hint: Text(
-                          "Daftar Sebagai",
-                          style: TextStyle(
-                              color: Colors.black38, fontSize: fontSize(0.04)),
-                        ),
                         value: _selectedRole,
                         items:
                             <String>['Bidan', 'Ibu Hamil'].map((String value) {
                           return DropdownMenuItem<String>(
                             value: value,
                             child: Text(value,
-                                style: TextStyle(fontSize: fontSize(0.04))),
+                                style: TextStyle(
+                                    fontFamily: 'Poppins',
+                                    fontSize: fontSize(0.04))),
                           );
                         }).toList(),
                         onChanged: (newValue) {
@@ -152,23 +160,21 @@ class _RoleState extends State<Role> {
                     SizedBox(
                       width: double.maxFinite,
                       child: ElevatedButton(
-                        onPressed: _selectedRole == null
-                            ? null
-                            : () {
-                                if (_selectedRole == 'Bidan') {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RegisterBidan()),
-                                  );
-                                } else if (_selectedRole == 'Ibu Hamil') {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => RegisterMama()),
-                                  );
-                                }
-                              },
+                        onPressed: () {
+                          if (_selectedRole == 'Bidan') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginBidan()),
+                            );
+                          } else if (_selectedRole == 'Ibu Hamil') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginMama()),
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0XFFFF899E),
                           padding: EdgeInsets.symmetric(
@@ -185,7 +191,7 @@ class _RoleState extends State<Role> {
                           ),
                         ),
                         child: const Text(
-                          'Daftar',
+                          'Selanjutnya',
                           style: TextStyle(color: Colors.white),
                         ),
                       ),
@@ -196,28 +202,6 @@ class _RoleState extends State<Role> {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  Widget _buildObjectsSection(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
-
-    return Container(
-      width: screenSize.width,
-      margin: EdgeInsets.symmetric(
-        vertical: screenSize.height * 0.01,
-      ),
-      child: Column(
-        children: [
-          SizedBox(height: screenSize.height * 0.05),
-          Image.asset(
-            "assets/cover.png",
-            width: screenSize.width * 0.5,
-            height: screenSize.height * 0.2,
-            fit: BoxFit.contain,
-          ),
-        ],
       ),
     );
   }

@@ -1,19 +1,21 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:innovillage/pages/admin/admin_page.dart';
+import 'package:innovillage/pages/home/home_pages.dart';
+import 'package:innovillage/pages/home/home_mama.dart';
 import 'package:innovillage/pages/register/register_bidan.dart';
 import 'package:innovillage/theme.dart';
 
-class LoginPages extends StatefulWidget {
-  const LoginPages({Key? key}) : super(key: key);
+class LoginBidan extends StatefulWidget {
+  const LoginBidan({Key? key}) : super(key: key);
 
   @override
-  State<LoginPages> createState() => _LoginPagesState();
+  State<LoginBidan> createState() => _LoginPagesState();
 }
 
-class _LoginPagesState extends State<LoginPages> {
+class _LoginPagesState extends State<LoginBidan> {
   bool _secureText = true;
 
   void showHide() {
@@ -25,6 +27,15 @@ class _LoginPagesState extends State<LoginPages> {
   final emailC = TextEditingController();
   final passC = TextEditingController();
 
+  Future<String?> getUserRole(String uid) async {
+    DocumentSnapshot userDoc =
+        await FirebaseFirestore.instance.collection('user').doc(uid).get();
+    if (userDoc.exists) {
+      return userDoc['role'];
+    }
+    return null;
+  }
+
   Future<void> login() async {
     try {
       if (emailC.text.isNotEmpty && passC.text.isNotEmpty) {
@@ -33,13 +44,22 @@ class _LoginPagesState extends State<LoginPages> {
                 email: emailC.text, password: passC.text);
 
         if (userCredential.user != null) {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) =>
-                const AdminHomePages(), // Adjust with your default home page
-          ));
+          String? role = await getUserRole(userCredential.user!.uid);
+          if (role == 'bidan') {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const HomePages(),
+            ));
+          } else if (role == 'mama') {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const HomeMama(),
+            ));
+          } else {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const LoginBidan(),
+            ));
+          }
         }
       } else {
-        print("Error: Email and password must be filled");
         showCenteredFlushbar(
           'Email dan password harus diisi.',
           context,
@@ -47,7 +67,6 @@ class _LoginPagesState extends State<LoginPages> {
         );
       }
     } catch (e) {
-      print("Error during login: $e");
       showCenteredFlushbar(
         'Terjadi kesalahan saat login. Silakan coba lagi.',
         context,
@@ -61,7 +80,7 @@ class _LoginPagesState extends State<LoginPages> {
     Flushbar(
       message: message,
       backgroundColor: isError ? Colors.red : Colors.green,
-      margin: EdgeInsets.all(8),
+      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.03),
       duration: Duration(seconds: 3),
       flushbarPosition: FlushbarPosition.TOP,
       flushbarStyle: FlushbarStyle.FLOATING,
@@ -80,29 +99,33 @@ class _LoginPagesState extends State<LoginPages> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return Scaffold(
       body: SafeArea(
         child: Center(
           child: ListView(
-            padding: EdgeInsets.all(24),
+            padding: EdgeInsets.all(screenWidth * 0.06),
             children: [
-              SizedBox(height: 80),
+              SizedBox(height: screenHeight * 0.1),
               Center(
                 child: Image.asset(
                   "assets/images/logo.png", // Replace with the path to your logo image
-                  height: 100,
-                  width: 100,
+                  height: screenWidth * 0.25,
+                  width: screenWidth * 0.25,
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.03),
               Center(
                 child: Text(
-                  "HALO MAMA",
+                  "HALO BIDAN",
                   style: regulerTextStyle.copyWith(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w700,
                     color: Colors.black,
-                    fontSize: 35,
+                    fontSize: screenWidth * 0.09,
                   ),
                 ),
               ),
@@ -112,36 +135,33 @@ class _LoginPagesState extends State<LoginPages> {
                   style: regulerTextStyle.copyWith(
                     fontFamily: 'Poppins',
                     fontWeight: FontWeight.w500,
-                    fontSize: 20,
+                    fontSize: screenWidth * 0.05,
                     color: Colors.black,
                   ),
                 ),
               ),
-              // Text(
-              //   'Masuk ke Akun Anda',
-              //   style: regulerTextStyle.copyWith(
-              //       fontFamily: 'Poppins', fontSize: 15, color: Colors.black),
-              // ),
-              SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.03),
               _buildTextField(
                 controller: emailC,
                 hintText: 'Email',
                 svgIcon: 'assets/icons/mail.svg',
+                screenWidth: screenWidth,
               ),
-              SizedBox(height: 16),
+              SizedBox(height: screenHeight * 0.02),
               _buildTextField(
                 controller: passC,
                 hintText: 'Password',
                 svgIcon: 'assets/icons/key.svg',
                 obscureText: _secureText,
-                // suffixIcon: IconButton(
-                //   onPressed: showHide,
-                //   icon: _secureText
-                //       ? Icon(Icons.visibility_off, size: 20, color: Colors.grey)
-                //       : Icon(Icons.visibility, size: 20, color: Colors.grey),
-                // ),
+                screenWidth: screenWidth,
+                suffixIcon: IconButton(
+                  onPressed: showHide,
+                  icon: _secureText
+                      ? Icon(Icons.visibility_off, size: screenWidth * 0.05)
+                      : Icon(Icons.visibility, size: screenWidth * 0.05),
+                ),
               ),
-              SizedBox(height: 30),
+              SizedBox(height: screenHeight * 0.04),
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
@@ -149,22 +169,23 @@ class _LoginPagesState extends State<LoginPages> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0XFFFF899E),
-                    padding: EdgeInsets.symmetric(vertical: 15),
+                    padding:
+                        EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(screenWidth * 0.04),
                     ),
-                    minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                    minimumSize: Size(screenWidth, screenHeight * 0.07),
                   ),
                   child: Text(
                     'Login',
                     style: regulerTextStyle.copyWith(
-                      fontSize: 18,
+                      fontSize: screenWidth * 0.045,
                       color: Colors.white,
                     ),
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              SizedBox(height: screenHeight * 0.03),
               Center(
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -175,7 +196,7 @@ class _LoginPagesState extends State<LoginPages> {
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w400,
                         color: Colors.black,
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.04,
                       ),
                     ),
                     InkWell(
@@ -189,12 +210,12 @@ class _LoginPagesState extends State<LoginPages> {
                         );
                       },
                       child: Text(
-                        ' Dafar Disini',
+                        ' Daftar Disini',
                         style: TextStyle(
                           fontFamily: 'Poppins',
                           fontWeight: FontWeight.w500,
                           color: const Color(0XFFFF899E),
-                          fontSize: 16,
+                          fontSize: screenWidth * 0.04,
                         ),
                       ),
                     ),
@@ -212,14 +233,15 @@ class _LoginPagesState extends State<LoginPages> {
     required TextEditingController controller,
     required String hintText,
     required String svgIcon,
+    required double screenWidth,
     bool obscureText = false,
     Widget? suffixIcon,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      height: 50,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+      height: screenWidth * 0.125,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(screenWidth * 0.02),
         boxShadow: [
           BoxShadow(
             color: Color.fromARGB(64, 172, 170, 164),
@@ -230,29 +252,29 @@ class _LoginPagesState extends State<LoginPages> {
         ],
         color: Colors.white,
       ),
-      width: MediaQuery.of(context).size.width,
+      width: screenWidth,
       child: Center(
         child: TextField(
           controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             prefixIcon: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
+              padding: EdgeInsets.symmetric(vertical: screenWidth * 0.025),
               child: SvgPicture.asset(
                 svgIcon,
-                width: 24,
-                height: 24,
+                width: screenWidth * 0.06,
+                height: screenWidth * 0.06,
               ),
             ),
             prefixIconConstraints: BoxConstraints(
-              minWidth: 40,
-              minHeight: 40,
+              minWidth: screenWidth * 0.1,
+              minHeight: screenWidth * 0.1,
             ),
             suffixIcon: suffixIcon,
             border: InputBorder.none,
             hintText: hintText,
             hintStyle: regulerTextStyle.copyWith(
-              fontSize: 16,
+              fontSize: screenWidth * 0.04,
               color: Colors.grey,
               fontFamily: 'Poppins',
             ),
