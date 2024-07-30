@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:innovillage/pages/login%20pages/login_page.dart';
+import 'package:innovillage/pages/login/login_bidan.dart';
 import 'package:innovillage/theme.dart';
 
 class RegisterBidan extends StatefulWidget {
@@ -47,20 +47,19 @@ class _RegisterBidanState extends State<RegisterBidan> {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
+            const SnackBar(
               content: Text('Akun berhasil dibuat! Silakan Log in.'),
             ),
           );
 
-          // Navigate to the LoginPages after successful registration
+          // Navigate to the LoginBidan after successful registration
           Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => const LoginPages(),
+            builder: (context) => const LoginBidan(),
           ));
         }
       } else {
-        print("Error: All fields must be filled");
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Semua kolom harus diisi.'),
           ),
         );
@@ -86,11 +85,9 @@ class _RegisterBidanState extends State<RegisterBidan> {
           content: Text(errorMessage),
         ),
       );
-      print("Error during registration: $e");
     } catch (e) {
-      print("Error during registration: $e");
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content:
               Text('An error occurred during registration. Please try again.'),
         ),
@@ -108,65 +105,73 @@ class _RegisterBidanState extends State<RegisterBidan> {
 
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var screenWidth = screenSize.width;
+    var screenHeight = screenSize.height;
+
     return SafeArea(
       child: Scaffold(
         body: ListView(
-          padding: EdgeInsets.all(24),
+          padding: EdgeInsets.all(screenWidth * 0.06),
           children: [
-            SizedBox(height: 80),
+            SizedBox(height: screenHeight * 0.06),
             Text(
               "Daftar",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w800,
-                fontSize: 48,
+                fontSize: screenWidth * 0.12,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: screenHeight * 0.01),
             Text(
-              "Lengkapi Data Mama",
+              "Lengkapi Data Bidan",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontFamily: 'Poppins',
                 fontWeight: FontWeight.w500,
-                fontSize: 16,
+                fontSize: screenWidth * 0.04,
                 color: Colors.black,
               ),
             ),
-            SizedBox(height: 40),
+            SizedBox(height: screenHeight * 0.05),
             _buildTextField(
               controller: nama,
               hintText: 'Nama',
               svgIcon: 'assets/icons/profile.svg',
+              screenWidth: screenWidth,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: screenHeight * 0.02),
             _buildTextField(
               controller: phone,
               hintText: 'Nomor Telepon',
               svgIcon: 'assets/icons/phone.svg',
+              screenWidth: screenWidth,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: screenHeight * 0.02),
             _buildTextField(
               controller: email,
               hintText: 'Email',
               svgIcon: 'assets/icons/mail.svg',
+              screenWidth: screenWidth,
             ),
-            SizedBox(height: 16),
+            SizedBox(height: screenHeight * 0.02),
             _buildTextField(
               controller: password,
               hintText: 'Password',
               svgIcon: 'assets/icons/key.svg',
               obscureText: _secureText,
-              // suffixIcon: IconButton(
-              //   onPressed: showHide,
-              //   icon: _secureText
-              //       ? Icon(Icons.visibility_off, size: 20)
-              //       : Icon(Icons.visibility, size: 20),
-              // ),
+              screenWidth: screenWidth,
+              suffixIcon: IconButton(
+                onPressed: showHide,
+                icon: _secureText
+                    ? Icon(Icons.visibility_off, size: screenWidth * 0.05)
+                    : Icon(Icons.visibility, size: screenWidth * 0.05),
+              ),
             ),
-            SizedBox(height: 32),
+            SizedBox(height: screenHeight * 0.04),
             Center(
               child: ElevatedButton(
                 onPressed: () async {
@@ -174,23 +179,23 @@ class _RegisterBidanState extends State<RegisterBidan> {
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0XFFFF899E), // Button color
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: EdgeInsets.symmetric(vertical: screenHeight * 0.02),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
+                    borderRadius: BorderRadius.circular(screenWidth * 0.04),
                   ),
-                  minimumSize: Size(MediaQuery.of(context).size.width, 50),
+                  minimumSize: Size(screenWidth, screenHeight * 0.07),
                 ),
                 child: Text(
                   'Daftar',
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: 18,
+                    fontSize: screenWidth * 0.045,
                     color: Colors.white,
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: screenHeight * 0.03),
             Center(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -200,7 +205,7 @@ class _RegisterBidanState extends State<RegisterBidan> {
                     style: TextStyle(
                       fontFamily: 'Poppins',
                       fontWeight: FontWeight.w400,
-                      fontSize: 16,
+                      fontSize: screenWidth * 0.04,
                       color: Colors.black,
                     ),
                   ),
@@ -208,7 +213,7 @@ class _RegisterBidanState extends State<RegisterBidan> {
                     onTap: () {
                       Navigator.pushAndRemoveUntil(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginPages()),
+                        MaterialPageRoute(builder: (context) => LoginBidan()),
                         (route) => false,
                       );
                     },
@@ -217,7 +222,7 @@ class _RegisterBidanState extends State<RegisterBidan> {
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.w500,
-                        fontSize: 16,
+                        fontSize: screenWidth * 0.04,
                         color: const Color(0XFFFF899E),
                       ),
                     ),
@@ -235,14 +240,15 @@ class _RegisterBidanState extends State<RegisterBidan> {
     required TextEditingController controller,
     required String hintText,
     required String svgIcon,
+    required double screenWidth,
     bool obscureText = false,
     Widget? suffixIcon,
   }) {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 8),
-      height: 50,
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+      height: screenWidth * 0.125,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: BorderRadius.circular(screenWidth * 0.02),
         boxShadow: [
           BoxShadow(
             color: Color.fromARGB(64, 172, 170, 164),
@@ -253,29 +259,29 @@ class _RegisterBidanState extends State<RegisterBidan> {
         ],
         color: Colors.white,
       ),
-      width: MediaQuery.of(context).size.width,
+      width: screenWidth,
       child: Center(
         child: TextField(
           controller: controller,
           obscureText: obscureText,
           decoration: InputDecoration(
             prefixIcon: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 9),
+              padding: EdgeInsets.symmetric(vertical: screenWidth * 0.025),
               child: SvgPicture.asset(
                 svgIcon,
-                width: 24,
-                height: 24,
+                width: screenWidth * 0.06,
+                height: screenWidth * 0.06,
               ),
             ),
             prefixIconConstraints: BoxConstraints(
-              minWidth: 40,
-              minHeight: 40,
+              minWidth: screenWidth * 0.1,
+              minHeight: screenWidth * 0.1,
             ),
             suffixIcon: suffixIcon,
             border: InputBorder.none,
             hintText: hintText,
             hintStyle: regulerTextStyle.copyWith(
-              fontSize: 16,
+              fontSize: screenWidth * 0.04,
               color: Colors.grey,
               fontFamily: 'Poppins',
             ),
